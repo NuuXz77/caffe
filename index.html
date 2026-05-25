@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grounded — Specialty Coffee & Café</title>
+    <meta name="description"
+        content="A premium specialty café where every cup tells a story. Handcrafted coffee, seasonal pastries, and a space designed to slow you down.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        espresso: '#1C1008',
+                        mocha: '#3B2214',
+                        coffee: '#5C3317',
+                        caramel: '#A0622A',
+                        latte: '#C9956A',
+                        cream: '#F5ECD7',
+                        parchment: '#FBF5EA',
+                        fog: '#F0E8D6',
+                        terracotta: '#B05C3A',
+                        clay: '#8B4A2F',
+                        olive: '#6B6840',
+                        sage: '#8A9070',
+                        stone: '#9E9589',
+                    },
+                    fontFamily: {
+                        display: ['Cormorant Garamond', 'Georgia', 'serif'],
+                        body: ['DM Sans', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #FBF5EA;
+            color: #1C1008;
+        }
+
+        .font-display {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+
+        /* Navbar */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
+            padding: 1.5rem 0;
+        }
+
+        #navbar.scrolled {
+            background: rgba(251, 245, 234, 0.97);
+            box-shadow: 0 1px 0 rgba(92, 51, 23, 0.08);
+            padding: 1rem 0;
+            backdrop-filter: blur(8px);
+        }
+
+        #navbar.scrolled .nav-logo,
+        #navbar.scrolled .nav-link {
+            color: #1C1008;
+        }
+
+        #navbar.scrolled .nav-cta {
+            background: #3B2214;
+            color: #F5ECD7;
+        }
+
+        /* Hero */
+        .hero-bg {
+            background: linear-gradient(160deg, #1C1008 0%, #3B2214 50%, #5C3317 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grain {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .hero-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(201, 149, 106, 0.07);
+        }
+
+        .hero-photo {
+            position: absolute;
+            right: max(24px, calc((100vw - 1280px) / 2 + 24px));
+            top: 52%;
+            transform: translateY(-50%);
+            width: min(34vw, 480px);
+            aspect-ratio: 3 / 4;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(245, 236, 215, 0.12);
+            box-shadow: 0 30px 80px rgba(16, 8, 4, 0.45);
+        }
+
+        .hero-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-photo-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(160deg, rgba(28, 16, 8, 0.15) 0%, rgba(28, 16, 8, 0.65) 100%);
+        }
+
+        .hero-photo-caption {
+            position: absolute;
+            left: 22px;
+            bottom: 22px;
+            color: #F5ECD7;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            opacity: 0.75;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-photo {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .anim-1 {
+            animation: fadeUp 0.8s ease 0.1s both;
+        }
+
+        .anim-2 {
+            animation: fadeUp 0.8s ease 0.25s both;
+        }
+
+        .anim-3 {
+            animation: fadeUp 0.8s ease 0.4s both;
+        }
+
+        .anim-4 {
+            animation: fadeUp 0.8s ease 0.55s both;
+        }
+
+        /* Cards */
+        .menu-card {
+            background: #FBF5EA;
+            border: 1px solid rgba(92, 51, 23, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(59, 34, 20, 0.12);
+        }
+
+        .menu-card-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .menu-card:hover .menu-card-img {
+            transform: scale(1.04);
+        }
+
+        /* Gallery */
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(28, 16, 8, 0.35);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        /* Testimonial */
+        .testimonial-card {
+            background: #FBF5EA;
+            border: 1px solid rgba(92, 51, 23, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .quote-mark {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 5rem;
+            line-height: 1;
+            color: rgba(176, 92, 58, 0.2);
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            pointer-events: none;
+        }
+
+        /* Divider */
+        .ornament {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #C9956A;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .ornament::before,
+        .ornament::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(201, 149, 106, 0.3);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #F5ECD7;
+            color: #1C1008;
+            padding: 0.875rem 2rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(28, 16, 8, 0.25);
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            color: #F5ECD7;
+            padding: 0.875rem 2rem;
+            border-radius: 100px;
+            border: 1px solid rgba(245, 236, 215, 0.35);
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            border-color: rgba(245, 236, 215, 0.7);
+            background: rgba(245, 236, 215, 0.08);
+        }
+
+        .btn-dark {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #1C1008;
+            color: #F5ECD7;
+            padding: 0.875rem 2rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-dark:hover {
+            background: #3B2214;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(59, 34, 20, 0.3);
+        }
+
+        /* Section fade-in on scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Scroll indicator */
+        .scroll-line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(245, 236, 215, 0.5), transparent);
+            margin: 0 auto;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: scaleY(0.8)
+            }
+
+            50% {
+                opacity: 1;
+                transform: scaleY(1)
+            }
+        }
+
+        /* Map embed */
+        .map-container {
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        /* Badge */
+        .badge-bestseller {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #B05C3A;
+            color: #FBF5EA;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 100px;
+        }
+
+        /* Stars */
+        .star {
+            color: #C9956A;
+        }
+
+        /* Horizontal rule */
+        .hr-soft {
+            border: none;
+            border-top: 1px solid rgba(92, 51, 23, 0.1);
+        }
+
+        /* WhatsApp */
+        .wa-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #25D366;
+            color: #fff;
+            padding: 0.875rem 1.75rem;
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+        }
+
+        .wa-btn:hover {
+            background: #1ebe5a;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        /* Mobile menu */
+        #mobile-menu {
+            transition: all 0.3s ease;
+        }
+
+        /* Smooth image placeholder */
+        .img-placeholder {
+            width: 100%;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: rgba(92, 51, 23, 0.5);
+            font-size: 1rem;
+        }
+
+        /* About section pattern */
+        .about-pattern {
+            background-image: radial-gradient(circle, rgba(176, 92, 58, 0.07) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Hours grid */
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(92, 51, 23, 0.08);
+            font-size: 0.9rem;
+        }
+
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body class="bg-parchment text-espresso">
+
+    <!-- ═══════════════════════════════════════════ NAVBAR ═══════════════════════════════════════════ -->
+    <nav id="navbar" aria-label="Main navigation">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <a href="#" class="nav-logo font-display text-2xl font-semibold tracking-wide text-cream"
+                style="text-decoration:none;">
+                Grounded
+            </a>
+            <!-- Desktop links -->
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#menu" class="nav-link text-sm text-cream/80 hover:text-cream transition-colors"
+                    style="text-decoration:none;">Menu</a>
+                <a href="#about" class="nav-link text-sm text-cream/80 hover:text-cream transition-colors"
+                    style="text-decoration:none;">Our Story</a>
+                <a href="#gallery" class="nav-link text-sm text-cream/80 hover:text-cream transition-colors"
+                    style="text-decoration:none;">Gallery</a>
+                <a href="#location" class="nav-link text-sm text-cream/80 hover:text-cream transition-colors"
+                    style="text-decoration:none;">Visit</a>
+                <a href="#location" class="nav-cta btn-primary" style="padding:0.6rem 1.5rem; font-size:0.8rem;">Reserve
+                    a Table</a>
+            </div>
+            <!-- Mobile hamburger -->
+            <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+                <span class="block w-6 h-0.5 bg-cream transition-all" id="bar1"></span>
+                <span class="block w-6 h-0.5 bg-cream transition-all" id="bar2"></span>
+                <span class="block w-4 h-0.5 bg-cream ml-auto transition-all" id="bar3"></span>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-parchment border-t border-coffee/10 px-6 py-4">
+            <div class="flex flex-col gap-4">
+                <a href="#menu" class="text-espresso text-sm font-medium" style="text-decoration:none;">Menu</a>
+                <a href="#about" class="text-espresso text-sm font-medium" style="text-decoration:none;">Our Story</a>
+                <a href="#gallery" class="text-espresso text-sm font-medium" style="text-decoration:none;">Gallery</a>
+                <a href="#location" class="text-espresso text-sm font-medium" style="text-decoration:none;">Visit</a>
+                <a href="#location" class="btn-dark" style="text-align:center;">Reserve a Table</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════ HERO ═══════════════════════════════════════════ -->
+    <section class="hero-bg" id="home">
+        <div class="hero-grain"></div>
+        <!-- Decorative circles -->
+        <div class="hero-circle" style="width:600px;height:600px;top:-200px;right:-150px;"></div>
+        <div class="hero-circle" style="width:300px;height:300px;bottom:100px;left:-80px;opacity:0.5;"></div>
+
+        <div class="hero-photo" aria-hidden="true">
+            <img src="https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?auto=format&fit=crop&w=1400&q=80"
+                alt="" loading="lazy">
+            <div class="hero-photo-overlay"></div>
+            <div class="hero-photo-caption font-display">Slow brew</div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 min-h-screen flex flex-col justify-center"
+            style="padding-top:6rem;padding-bottom:4rem;">
+            <div class="max-w-3xl">
+                <!-- Eyebrow -->
+                <div class="anim-1 ornament mb-8" style="justify-content:flex-start;max-width:260px;">
+                    <span>Est. 2018 · Specialty Coffee</span>
+                </div>
+
+                <!-- Headline -->
+                <h1 class="anim-2 font-display text-cream leading-tight mb-6"
+                    style="font-size:clamp(3rem,7vw,5.5rem);font-weight:300;letter-spacing:-0.01em;">
+                    A place to<br>
+                    <em style="font-style:italic;font-weight:300;">slow down</em><br>
+                    and savor.
+                </h1>
+
+                <!-- Subtext -->
+                <p class="anim-3 text-cream/60 mb-10 font-body leading-relaxed"
+                    style="font-size:1.05rem;max-width:440px;">
+                    Handcrafted coffees, seasonal pastries, and a warm space where every visit feels like coming home.
+                </p>
+
+                <!-- CTAs -->
+                <div class="anim-4 flex flex-wrap gap-4">
+                    <a href="#menu" class="btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                            <rect x="9" y="3" width="6" height="4" rx="1" />
+                        </svg>
+                        View Menu
+                    </a>
+                    <a href="#location" class="btn-outline">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8">
+                            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z" />
+                            <circle cx="12" cy="10" r="3" />
+                        </svg>
+                        Visit Café
+                    </a>
+                </div>
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="mt-20 text-center" style="opacity:0.4;">
+                <p class="text-cream text-xs tracking-widest uppercase mb-4" style="letter-spacing:0.18em;">Scroll</p>
+                <div class="scroll-line"></div>
+            </div>
+        </div>
+
+        <!-- Hero stats strip -->
+        <div class="border-t border-cream/10 bg-black/20">
+            <div class="max-w-7xl mx-auto px-6 py-6 grid grid-cols-3 gap-4 md:gap-0 md:divide-x divide-cream/10">
+                <div class="text-center px-4">
+                    <p class="font-display text-cream text-3xl font-light">12+</p>
+                    <p class="text-cream/50 text-xs tracking-widest uppercase mt-1">Origins</p>
+                </div>
+                <div class="text-center px-4">
+                    <p class="font-display text-cream text-3xl font-light">4.9</p>
+                    <p class="text-cream/50 text-xs tracking-widest uppercase mt-1">Rating</p>
+                </div>
+                <div class="text-center px-4">
+                    <p class="font-display text-cream text-3xl font-light">6yr</p>
+                    <p class="text-cream/50 text-xs tracking-widest uppercase mt-1">In the city</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ MENU ═══════════════════════════════════════════ -->
+    <section id="menu" class="py-24 px-6" style="background:#F0E8D6;">
+        <div class="max-w-7xl mx-auto">
+            <!-- Section header -->
+            <div class="reveal text-center mb-16">
+                <div class="ornament mb-5" style="max-width:200px;margin-left:auto;margin-right:auto;">
+                    <span>Our Menu</span>
+                </div>
+                <h2 class="font-display text-espresso leading-tight"
+                    style="font-size:clamp(2.2rem,5vw,3.5rem);font-weight:300;">
+                    Crafted with care,<br><em>served with warmth</em>
+                </h2>
+                <p class="text-stone mt-4 max-w-md mx-auto" style="font-size:0.95rem;line-height:1.8;">
+                    Every item on our menu is made from carefully sourced ingredients, prepared fresh each morning.
+                </p>
+            </div>
+
+            <!-- Filter tabs -->
+            <div class="reveal flex flex-wrap justify-center gap-2 mb-12" id="menu-tabs">
+                <button onclick="filterMenu('all')"
+                    class="menu-tab active px-5 py-2 rounded-full text-sm font-medium transition-all"
+                    data-cat="all">All</button>
+                <button onclick="filterMenu('coffee')"
+                    class="menu-tab px-5 py-2 rounded-full text-sm font-medium transition-all"
+                    data-cat="coffee">Coffee</button>
+                <button onclick="filterMenu('drinks')"
+                    class="menu-tab px-5 py-2 rounded-full text-sm font-medium transition-all"
+                    data-cat="drinks">Drinks</button>
+                <button onclick="filterMenu('food')"
+                    class="menu-tab px-5 py-2 rounded-full text-sm font-medium transition-all"
+                    data-cat="food">Food</button>
+            </div>
+
+            <!-- Menu grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="menu-grid">
+
+                <!-- Coffee items -->
+                <div class="menu-card reveal" data-cat="coffee">
+                    <div style="overflow:hidden;height:220px;position:relative;background:#3B2214;">
+                        <img class="menu-card-img"
+                            src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80"
+                            alt="Signature espresso" loading="lazy">
+                        <div class="absolute top-3 left-3">
+                            <span class="badge-bestseller">★ Best Seller</span>
+                        </div>
+                    </div>
+                    <div style="padding:1.25rem;">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="font-display text-espresso text-xl font-semibold">Signature Espresso</h3>
+                            <span class="text-caramel font-medium text-base"
+                                style="flex-shrink:0;margin-left:0.5rem;">Rp 35k</span>
+                        </div>
+                        <p class="text-stone text-sm leading-relaxed">Ethiopian Yirgacheffe single origin, pulled to a
+                            1:2 ratio with notes of blueberry and dark chocolate.</p>
+                    </div>
+                </div>
+
+                <div class="menu-card reveal" data-cat="coffee">
+                    <div style="overflow:hidden;height:220px;position:relative;background:#5C3317;">
+                        <img class="menu-card-img"
+                            src="https://images.unsplash.com/photo-1459755486867-b55449bb39ff?auto=format&fit=crop&w=1200&q=80"
+                            alt="Pour over coffee" loading="lazy">
+                    </div>
+                    <div style="padding:1.25rem;">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="font-display text-espresso text-xl font-semibold">Pour Over</h3>
+                            <span class="text-caramel font-medium text-base"
+                                style="flex-shrink:0;margin-left:0.5rem;">Rp 45k</span>
+                        </div>
+                        <p class="text-stone text-sm leading-relaxed">Slow-brewed with precision, our V60 pour-over
+                            reveals nuanced flavors you never knew coffee had.</p>
+                    </div>
+                </div>
+
+                <div class="menu-card reveal" data-cat="coffee">
+                    <div style="overflow:hidden;height:220px;position:relative;background:#1C1008;">
+                        <img class="menu-card-img"
+                            src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=80"
+                            alt="Flat white" loading="lazy">
+                    </div>
+                    <div style="padding:1.25rem;">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="font-display text-espresso text-xl font-semibold">Flat White</h3>
+                            <span class="text-caramel font-medium text-base"
+                                style="flex-shrink:0;margin-left:0.5rem;">Rp 42k</span>
+                        </div>
+                        <p class="text-stone text-sm leading-relaxed">Double ristretto with velvety microfoam milk. The
+                            barista's favorite — bold but balanced.</p>
+                    </div>
+                </div>
+
+                <!-- Drinks -->
+                <div class="menu-card reveal" data-cat="drinks">
+                    <div style="overflow:hidden;height:220px;position:relative;background:#6B6840;">
+                        <img class="menu-card-img"
+                            src="https://images.unsplash.com/photo-1515823662972-da6a2e4d3002?auto=format&fit=crop&w=1200&q=80"
+                            alt="Matcha latte" loading="lazy">
+                        <div class="absolute top-3 left-3">
+                            <span class="badge-bestseller">★ Best Seller</span>
+                        </div>
+                    </div>
+                    <div style="padding:1.25rem;">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="font-display text-espresso text-xl font-semibold">Matcha Latte</h3>
+                            <span class="text-caramel font-medium text-base"
+                                style="flex-shrink:0;margin-left:0.5rem;">Rp 38k</span>
+                        </div>
+                        <p class="text-stone text-sm leading-relaxed">Ceremonial-grade Japanese matcha whisked with oat
+                            milk. Earthy, smooth, and beautifully green.</p>
+                    </div>
+                </div>
+
+                <div class="menu-card reveal" data-cat="drinks">
+                    <div style="overflow:hidden;height:220px;position:relative;background:#B05C3A;">
+                        <img class="menu-card-img"
+                            src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=1200&q=80"
+                            alt="Cold brew float" loading="lazy">
+                    </div>
+                    <div style="padding:1.25rem;">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="font-display text-espresso text-xl font-semibold">Cold Brew Float</h3>
+                            <span class="text-caramel font-medium text-base"
+                                style="flex-shrink:0;margin-left:0.5rem;">Rp 48k</span>
+                        </div>
+                        <p class="text-stone text-sm leading-relaxed">18-hour steeped cold brew topped with a single
+                            scoop of vanilla bean ice cream. Seasonal.</p>
+                    </div>
+                </div>
+
+                <!-- Food -->
+                <div class="menu-card reveal" data-cat="food">
+                    <div style="overflow:hidden;height:220px;position:relative;background:#C9956A;">
+                        <img class="menu-card-img"
+                            src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80"
+                            alt="Almond croissant" loading="lazy">
+                        <div class="absolute top-3 left-3">
+                            <span class="badge-bestseller">★ Best Seller</span>
+                        </div>
+                    </div>
+                    <div style="padding:1.25rem;">
+                        <div class="flex items-start justify-between mb-2">
+                            <h3 class="font-display text-espresso text-xl font-semibold">Almond Croissant</h3>
+                            <span class="text-caramel font-medium text-base"
+                                style="flex-shrink:0;margin-left:0.5rem;">Rp 32k</span>
+                        </div>
+                        <p class="text-stone text-sm leading-relaxed">Twice-baked with house-made almond cream. Crispy
+                            on the outside, buttery soft within.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- CTA -->
+            <div class="reveal text-center mt-12">
+                <a href="#" class="btn-dark">See Full Menu &nbsp;→</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ ABOUT ═══════════════════════════════════════════ -->
+    <section id="about" class="py-24 px-6 bg-parchment">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+                <!-- Image side -->
+                <div class="reveal">
+                    <div class="relative">
+                        <!-- Main "image" -->
+                        <div
+                            style="height:520px;background:linear-gradient(145deg,#1C1008 0%,#3B2214 40%,#5C3317 70%,#A0622A 100%);border-radius:20px;overflow:hidden;position:relative;">
+                            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1400&q=80"
+                                alt="Cafe barista preparing coffee" loading="lazy"
+                                style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.55;">
+                            <div
+                                style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%, rgba(201,149,106,0.3), transparent 60%);">
+                            </div>
+                            <!-- Decorative coffee ring -->
+                            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
+                                <svg width="220" height="220" viewBox="0 0 220 220" fill="none"
+                                    opacity="0.5">
+                                    <circle cx="110" cy="110" r="90" stroke="#C9956A" stroke-width="1"
+                                        stroke-dasharray="6 4" />
+                                    <circle cx="110" cy="110" r="70" stroke="#C9956A" stroke-width="0.5"
+                                        opacity="0.5" />
+                                    <circle cx="110" cy="110" r="40" stroke="#F5ECD7"
+                                        stroke-width="1.5" />
+                                    <circle cx="110" cy="110" r="18" fill="rgba(201,149,106,0.3)"
+                                        stroke="#C9956A" stroke-width="1" />
+                                    <path d="M110 20 L110 200 M20 110 L200 110" stroke="#C9956A" stroke-width="0.5"
+                                        opacity="0.3" />
+                                    <text x="110" y="114" text-anchor="middle" fill="#F5ECD7"
+                                        font-family="Cormorant Garamond" font-size="13" font-style="italic"
+                                        opacity="0.7">origin</text>
+                                </svg>
+                            </div>
+                            <div class="absolute bottom-6 left-6 right-6">
+                                <p class="font-display text-cream text-2xl font-light italic">"Coffee is our
+                                    craft,<br>community is our purpose."</p>
+                            </div>
+                        </div>
+                        <!-- Floating card -->
+                        <div
+                            style="position:absolute;bottom:-24px;right:-20px;background:#FBF5EA;border-radius:16px;padding:1.25rem 1.5rem;box-shadow:0 12px 40px rgba(59,34,20,0.15);border:1px solid rgba(92,51,23,0.1);max-width:200px;">
+                            <p class="font-display text-espresso text-3xl font-light">6+</p>
+                            <p class="text-stone text-sm mt-1">Years of specialty<br>coffee in Bandung</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text side -->
+                <div class="reveal" style="transition-delay:0.15s;">
+                    <div class="ornament mb-6" style="justify-content:flex-start;max-width:200px;">
+                        <span>Our Story</span>
+                    </div>
+                    <h2 class="font-display text-espresso leading-tight mb-6"
+                        style="font-size:clamp(2rem,4vw,3rem);font-weight:300;">
+                        More than coffee —<br>
+                        <em>a community rooted</em><br>
+                        in good taste.
+                    </h2>
+                    <p class="text-stone leading-relaxed mb-5" style="font-size:0.95rem;line-height:1.9;">
+                        Grounded was born in 2018 from a simple obsession: what would happen if a small café in Bandung
+                        took specialty coffee as seriously as the best roasters in Tokyo or Melbourne?
+                    </p>
+                    <p class="text-stone leading-relaxed mb-8" style="font-size:0.95rem;line-height:1.9;">
+                        We built relationships with farmers across Ethiopia, Flores, and Toraja — paying fair prices and
+                        visiting farms each harvest. Every bag we source has a story. Every cup we pour carries that
+                        story forward.
+                    </p>
+
+                    <!-- Values -->
+                    <div class="grid grid-cols-2 gap-4 mb-10">
+                        <div
+                            style="padding:1rem 1.25rem;background:#F0E8D6;border-radius:12px;border:1px solid rgba(92,51,23,0.08);">
+                            <p class="font-display text-terracotta text-2xl font-light">Direct</p>
+                            <p class="text-stone text-xs mt-1 leading-relaxed">Farm-to-cup sourcing with transparency
+                            </p>
+                        </div>
+                        <div
+                            style="padding:1rem 1.25rem;background:#F0E8D6;border-radius:12px;border:1px solid rgba(92,51,23,0.08);">
+                            <p class="font-display text-terracotta text-2xl font-light">Fresh</p>
+                            <p class="text-stone text-xs mt-1 leading-relaxed">Roasted weekly, brewed to order</p>
+                        </div>
+                        <div
+                            style="padding:1rem 1.25rem;background:#F0E8D6;border-radius:12px;border:1px solid rgba(92,51,23,0.08);">
+                            <p class="font-display text-terracotta text-2xl font-light">Warm</p>
+                            <p class="text-stone text-xs mt-1 leading-relaxed">A space for people, not just coffee</p>
+                        </div>
+                        <div
+                            style="padding:1rem 1.25rem;background:#F0E8D6;border-radius:12px;border:1px solid rgba(92,51,23,0.08);">
+                            <p class="font-display text-terracotta text-2xl font-light">Local</p>
+                            <p class="text-stone text-xs mt-1 leading-relaxed">Supporting Indonesian agriculture</p>
+                        </div>
+                    </div>
+
+                    <a href="#menu" class="btn-dark">Explore the Menu &nbsp;→</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ GALLERY ═══════════════════════════════════════════ -->
+    <section id="gallery" style="background:#1C1008;padding:5rem 1.5rem;">
+        <div class="max-w-7xl mx-auto">
+            <div class="reveal text-center mb-14">
+                <div class="ornament mb-5" style="max-width:180px;margin:0 auto 1.25rem;">
+                    <span style="color:#C9956A;letter-spacing:0.15em;font-size:0.7rem;text-transform:uppercase;">The
+                        Atmosphere</span>
+                </div>
+                <h2 class="font-display text-cream leading-tight"
+                    style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:300;">
+                    Come as you are,<br><em>stay as long as you like</em>
+                </h2>
+            </div>
+
+            <!-- Masonry-style grid -->
+            <div class="reveal grid grid-cols-2 md:grid-cols-4 gap-3"
+                style="grid-auto-rows:200px;grid-auto-flow:dense;">
+
+                <!-- Tall item 1 -->
+                <div class="gallery-item" style="grid-row:span 2;background:linear-gradient(160deg,#3B2214,#5C3317);">
+                    <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1200&q=80"
+                        alt="Barista craft" loading="lazy">
+                    <div class="gallery-overlay">
+                        <p class="text-cream font-display italic text-lg">Barista craft</p>
+                    </div>
+                </div>
+
+                <!-- Regular -->
+                <div class="gallery-item" style="background:linear-gradient(135deg,#5C3317,#A0622A);">
+                    <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80"
+                        alt="Morning pastries" loading="lazy">
+                    <div class="gallery-overlay">
+                        <p class="text-cream font-display italic text-sm">Morning pastries</p>
+                    </div>
+                </div>
+
+                <!-- Regular 2 -->
+                <div class="gallery-item" style="background:linear-gradient(135deg,#6B6840,#8A9070);">
+                    <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=1200&q=80"
+                        alt="Cafe interior" loading="lazy">
+                    <div class="gallery-overlay">
+                        <p class="text-cream font-display italic text-sm">Our space</p>
+                    </div>
+                </div>
+
+                <!-- Wide item -->
+                <div class="gallery-item col-span-2" style="background:linear-gradient(135deg,#1C1008,#3B2214);">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80"
+                        alt="Coffee table scene" loading="lazy">
+                    <div style="position:absolute;inset:0;background:rgba(28,16,8,0.4);"></div>
+                    <div style="position:relative;z-index:1;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+                        <p class="font-display text-cream text-3xl font-light italic text-center px-6"
+                            style="opacity:0.8;">"Every cup is a small act of care."</p>
+                    </div>
+                    <div class="gallery-overlay">
+                        <p class="text-cream font-display italic">The Grounded philosophy</p>
+                    </div>
+                </div>
+
+                <!-- Tall item 2 -->
+                <div class="gallery-item md:col-span-1"
+                    style="grid-row:span 2;background:linear-gradient(160deg,#A0622A,#B05C3A);">
+                    <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1200&q=80"
+                        alt="Single origin beans" loading="lazy">
+                    <div class="gallery-overlay">
+                        <p class="text-cream font-display italic text-sm">Single origin</p>
+                    </div>
+                </div>
+
+                <!-- Regular 3 -->
+                <div class="gallery-item" style="background:linear-gradient(135deg,#3B2214,#1C1008);">
+                    <img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=1200&q=80"
+                        alt="Latte art" loading="lazy">
+                    <div class="gallery-overlay">
+                        <p class="text-cream font-display italic text-sm">Latte art</p>
+                    </div>
+                </div>
+
+                <!-- Regular 4 -->
+                <div class="gallery-item" style="background:linear-gradient(135deg,#5C3317,#6B6840);">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1200&q=80"
+                        alt="Roastery" loading="lazy">
+                    <div class="gallery-overlay">
+                        <p class="text-cream font-display italic text-sm">Roastery</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- IG link -->
+            <div class="reveal text-center mt-10">
+                <a href="#"
+                    class="inline-flex items-center gap-2 text-cream/50 hover:text-cream/80 text-sm transition-colors"
+                    style="text-decoration:none;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8">
+                        <rect x="2" y="2" width="20" height="20" rx="5" />
+                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                        <path d="M17.5 6.5h.01" />
+                    </svg>
+                    Follow @groundedcafe on Instagram
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ TESTIMONIALS ═══════════════════════════════════════════ -->
+    <section class="py-24 px-6 bg-fog">
+        <div class="max-w-7xl mx-auto">
+            <div class="reveal text-center mb-14">
+                <div class="ornament mb-5" style="max-width:200px;margin:0 auto;">
+                    <span>What guests say</span>
+                </div>
+                <h2 class="font-display text-espresso leading-tight"
+                    style="font-size:clamp(2rem,4vw,3rem);font-weight:300;">
+                    Words from people<br><em>who know good coffee</em>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <div class="testimonial-card reveal">
+                    <div class="quote-mark">"</div>
+                    <div class="flex gap-1 mb-4 mt-4">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span
+                            class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="text-espresso leading-relaxed mb-6 relative z-10"
+                        style="font-size:0.95rem;line-height:1.9;">
+                        Genuinely the best pour-over I've had outside of Tokyo. The barista explained the origin story
+                        of the beans — that kind of detail is rare.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#3B2214,#A0622A);display:flex;align-items:center;justify-content:center;">
+                            <span style="color:#F5ECD7;font-size:0.75rem;font-weight:500;">RH</span>
+                        </div>
+                        <div>
+                            <p class="font-medium text-espresso text-sm">Rizka Haryani</p>
+                            <p class="text-stone text-xs">Coffee enthusiast, Jakarta</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal" style="transition-delay:0.1s;">
+                    <div class="quote-mark">"</div>
+                    <div class="flex gap-1 mb-4 mt-4">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span
+                            class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="text-espresso leading-relaxed mb-6 relative z-10"
+                        style="font-size:0.95rem;line-height:1.9;">
+                        My go-to remote working spot in Bandung. The WiFi is solid, the music is calm, and the almond
+                        croissant is genuinely life-changing.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#6B6840,#8A9070);display:flex;align-items:center;justify-content:center;">
+                            <span style="color:#F5ECD7;font-size:0.75rem;font-weight:500;">AF</span>
+                        </div>
+                        <div>
+                            <p class="font-medium text-espresso text-sm">Ahmad Fauzi</p>
+                            <p class="text-stone text-xs">Freelance designer, Bandung</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal" style="transition-delay:0.2s;">
+                    <div class="quote-mark">"</div>
+                    <div class="flex gap-1 mb-4 mt-4">
+                        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span
+                            class="star">★</span><span class="star">★</span>
+                    </div>
+                    <p class="text-espresso leading-relaxed mb-6 relative z-10"
+                        style="font-size:0.95rem;line-height:1.9;">
+                        The matcha latte here is the best I've found. Made with real ceremonial grade matcha — you can
+                        taste the difference immediately.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <div
+                            style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#B05C3A,#C9956A);display:flex;align-items:center;justify-content:center;">
+                            <span style="color:#F5ECD7;font-size:0.75rem;font-weight:500;">SR</span>
+                        </div>
+                        <div>
+                            <p class="font-medium text-espresso text-sm">Sinta Rahayu</p>
+                            <p class="text-stone text-xs">Food blogger, Bandung</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ LOCATION ═══════════════════════════════════════════ -->
+    <section id="location" class="py-24 px-6 bg-parchment">
+        <div class="max-w-7xl mx-auto">
+            <div class="reveal text-center mb-14">
+                <div class="ornament mb-5" style="max-width:180px;margin:0 auto;">
+                    <span>Find us</span>
+                </div>
+                <h2 class="font-display text-espresso leading-tight"
+                    style="font-size:clamp(2rem,4vw,3rem);font-weight:300;">
+                    Come visit us in<br><em>the heart of Bandung</em>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+
+                <!-- Map -->
+                <div class="reveal map-container"
+                    style="height:420px;background:linear-gradient(145deg,#3B2214 0%,#5C3317 50%,#A0622A 100%);border-radius:20px;overflow:hidden;position:relative;border:1px solid rgba(92,51,23,0.15);">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15838.124!2d107.6069!3d-6.9175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e90c8d5a2a4d%3A0x60e2b3b44f7c1d0!2sBandung%2C+Jawa+Barat!5e0!3m2!1sen!2sid!4v1"
+                        width="100%" height="100%" style="border:0;filter:sepia(20%) contrast(0.9);"
+                        allowfullscreen="" loading="lazy" title="Grounded Café location in Bandung"></iframe>
+                </div>
+
+                <!-- Info -->
+                <div class="reveal" style="transition-delay:0.15s;">
+                    <!-- Address -->
+                    <div
+                        style="padding:1.5rem;background:#F0E8D6;border-radius:16px;border:1px solid rgba(92,51,23,0.1);margin-bottom:1rem;">
+                        <div class="flex items-start gap-3">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B05C3A"
+                                stroke-width="1.8" style="flex-shrink:0;margin-top:2px;">
+                                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            <div>
+                                <p class="font-medium text-espresso mb-1">Address</p>
+                                <p class="text-stone text-sm leading-relaxed">Jl. Riau No. 12, Bandung Wetan<br>Kota
+                                    Bandung, Jawa Barat 40115</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hours -->
+                    <div
+                        style="padding:1.5rem;background:#F0E8D6;border-radius:16px;border:1px solid rgba(92,51,23,0.1);margin-bottom:1rem;">
+                        <div class="flex items-center gap-3 mb-4">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B05C3A"
+                                stroke-width="1.8">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 6v6l4 2" />
+                            </svg>
+                            <p class="font-medium text-espresso">Opening Hours</p>
+                        </div>
+                        <div class="hours-row"><span class="text-stone">Monday – Friday</span><span
+                                class="text-espresso font-medium">07:00 – 21:00</span></div>
+                        <div class="hours-row"><span class="text-stone">Saturday</span><span
+                                class="text-espresso font-medium">08:00 – 22:00</span></div>
+                        <div class="hours-row"><span class="text-stone">Sunday</span><span
+                                class="text-espresso font-medium">08:00 – 20:00</span></div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div
+                        style="padding:1.5rem;background:#F0E8D6;border-radius:16px;border:1px solid rgba(92,51,23,0.1);margin-bottom:1.5rem;">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B05C3A"
+                                stroke-width="1.8">
+                                <path
+                                    d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18H5a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z" />
+                            </svg>
+                            <p class="font-medium text-espresso">Get in touch</p>
+                        </div>
+                        <p class="text-stone text-sm">+62 812-3456-7890</p>
+                        <p class="text-stone text-sm">hello@groundedcafe.id</p>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex flex-wrap gap-3">
+                        <a href="https://wa.me/6281234567890" class="wa-btn" target="_blank" rel="noopener">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                            </svg>
+                            WhatsApp us
+                        </a>
+                        <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn-dark">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.8">
+                                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                            Get Directions
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════ FOOTER ═══════════════════════════════════════════ -->
+    <footer style="background:#1C1008;padding:4rem 1.5rem 2rem;">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+                <!-- Brand -->
+                <div class="md:col-span-2">
+                    <h2 class="font-display text-cream text-3xl font-light mb-4">Grounded</h2>
+                    <p class="text-cream/40 text-sm leading-relaxed max-w-xs mb-6">
+                        A specialty café rooted in good coffee, honest ingredients, and the belief that every cup
+                        deserves your full attention.
+                    </p>
+                    <!-- Social links -->
+                    <div class="flex gap-4">
+                        <a href="#" aria-label="Instagram"
+                            style="width:38px;height:38px;border:1px solid rgba(245,236,215,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;text-decoration:none;"
+                            onmouseover="this.style.borderColor='rgba(245,236,215,0.4)'"
+                            onmouseout="this.style.borderColor='rgba(245,236,215,0.15)'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5ECD7"
+                                stroke-width="1.8" opacity="0.6">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                                <path d="M17.5 6.5h.01" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="TikTok"
+                            style="width:38px;height:38px;border:1px solid rgba(245,236,215,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;text-decoration:none;"
+                            onmouseover="this.style.borderColor='rgba(245,236,215,0.4)'"
+                            onmouseout="this.style.borderColor='rgba(245,236,215,0.15)'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="#F5ECD7" opacity="0.6">
+                                <path
+                                    d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.74a4.85 4.85 0 01-1.01-.05z" />
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Twitter / X"
+                            style="width:38px;height:38px;border:1px solid rgba(245,236,215,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:border-color 0.2s;text-decoration:none;"
+                            onmouseover="this.style.borderColor='rgba(245,236,215,0.4)'"
+                            onmouseout="this.style.borderColor='rgba(245,236,215,0.15)'">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="#F5ECD7" opacity="0.6">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.213 5.567zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <p class="text-cream/30 text-xs tracking-widest uppercase mb-4">Explore</p>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem;">
+                        <li><a href="#menu" class="text-cream/50 hover:text-cream text-sm transition-colors"
+                                style="text-decoration:none;">Menu</a></li>
+                        <li><a href="#about" class="text-cream/50 hover:text-cream text-sm transition-colors"
+                                style="text-decoration:none;">Our Story</a></li>
+                        <li><a href="#gallery" class="text-cream/50 hover:text-cream text-sm transition-colors"
+                                style="text-decoration:none;">Gallery</a></li>
+                        <li><a href="#location" class="text-cream/50 hover:text-cream text-sm transition-colors"
+                                style="text-decoration:none;">Visit</a></li>
+                        <li><a href="#" class="text-cream/50 hover:text-cream text-sm transition-colors"
+                                style="text-decoration:none;">Gift Cards</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <p class="text-cream/30 text-xs tracking-widest uppercase mb-4">Contact</p>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.6rem;">
+                        <li class="text-cream/50 text-sm">hello@groundedcafe.id</li>
+                        <li class="text-cream/50 text-sm">+62 812-3456-7890</li>
+                        <li class="text-cream/50 text-sm mt-2">Jl. Riau No. 12<br>Bandung, Jawa Barat</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="hr-soft" style="border-color:rgba(245,236,215,0.08);margin-bottom:1.5rem;">
+
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-cream/25 text-xs">© 2025 Grounded Café. All rights reserved.</p>
+                <div class="flex gap-5">
+                    <a href="#" class="text-cream/25 hover:text-cream/50 text-xs transition-colors"
+                        style="text-decoration:none;">Privacy Policy</a>
+                    <a href="#" class="text-cream/25 hover:text-cream/50 text-xs transition-colors"
+                        style="text-decoration:none;">Terms</a>
+                    <a href="#" class="text-cream/25 hover:text-cream/50 text-xs transition-colors"
+                        style="text-decoration:none;">Sitemap</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ── Navbar scroll behavior ──
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }, {
+            passive: true
+        });
+
+        // ── Mobile menu toggle ──
+        const toggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let menuOpen = false;
+        toggle.addEventListener('click', () => {
+            menuOpen = !menuOpen;
+            mobileMenu.classList.toggle('hidden', !menuOpen);
+            document.getElementById('bar3').style.width = menuOpen ? '24px' : '16px';
+        });
+
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                menuOpen = false;
+                mobileMenu.classList.add('hidden');
+                document.getElementById('bar3').style.width = '16px';
+            });
+        });
+
+        // ── Scroll reveal ──
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        reveals.forEach(el => observer.observe(el));
+
+        // ── Menu filter ──
+        const tabs = document.querySelectorAll('.menu-tab');
+
+        // Style tabs
+        function styleTab(tab, active) {
+            if (active) {
+                tab.style.background = '#1C1008';
+                tab.style.color = '#F5ECD7';
+            } else {
+                tab.style.background = 'rgba(92,51,23,0.08)';
+                tab.style.color = '#5C3317';
+            }
+        }
+        tabs.forEach(t => styleTab(t, t.dataset.cat === 'all'));
+
+        function filterMenu(cat) {
+            tabs.forEach(t => styleTab(t, t.dataset.cat === cat));
+            const cards = document.querySelectorAll('#menu-grid .menu-card');
+            cards.forEach(card => {
+                const c = card.dataset.cat;
+                if (cat === 'all' || c === cat) {
+                    card.style.display = '';
+                    card.style.opacity = '1';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
